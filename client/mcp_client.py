@@ -70,18 +70,19 @@ def agent_loop(user_prompt):
         tool_result = call_tool(plan["tool"], plan["parameters"])
         
         # Give the result back to the LLM for a nice final answer
-        followup_prompt = f"The tool returned this result: {tool_result}. Explain it to the user."
-        final_resp = requests.post(
-            OLLAMA_URL,
-            json={
-                "model": "gpt-oss:20b",
-                "prompt": followup_prompt,
-                "options": {"temperature": 0},
-                "stream": False
-            }
-        ).json()["response"]
+        return tool_result
+        # followup_prompt = f"The tool returned this result: {tool_result}. Explain it to the user."
+        # final_resp = requests.post(
+        #     OLLAMA_URL,
+        #     json={
+        #         "model": "gpt-oss:20b",
+        #         "prompt": followup_prompt,
+        #         "options": {"temperature": 0},
+        #         "stream": False
+        #     }
+        # ).json()["response"]
 
-        return final_resp
+        # return final_resp
     else:
         print("💬 LLM answered directly without using tools.")
         return plan.get("answer", "")
